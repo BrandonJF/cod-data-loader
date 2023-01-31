@@ -8,8 +8,17 @@ import re
 # img = cv2.imread("cod_data_loader/res/inventory1.jpg")
 # cropped_img = img[int(img.shape[0]/2):int(img.shape[0])]
 # img = cropped_img
-template = cv2.imread("cod_data_loader/res/needle_level.jpg")
-threshold = 0.7
+
+cap = cv2.VideoCapture('cod_data_loader/res/haystack_video_frame.png')
+# cap = cv2.VideoCapture('cod_data_loader/res/FastWeapon.mp4')
+# cap = cv2.VideoCapture('cod_data_loader/res/haystack_video_frame.png')
+
+# template = cv2.imread("cod_data_loader/res/needle_level_video_small.png")
+# template = cv2.imread("cod_data_loader/res/needle_level_hires.png")
+template = cv2.imread("cod_data_loader/res/haystack_video_frame.png")
+
+threshold = 0.6
+
 
 templateHeight,templateWidth, templateColorChannels = template.shape
 
@@ -33,8 +42,13 @@ def processFrame(frame):
     # global threshold
     # threshold = val/100
     # Perform template matching
-    cropped_img = frame[int(frame.shape[0]/2):int(frame.shape[0])]
+    # cropped_img = frame[int(frame.shape[0]/2):int(frame.shape[0])]
+    height, width, channels = frame.shape
+    frame = frame[int(33*height/40):int(9*height/10), 0:width]
+    cropped_img = frame
     img_gray = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("frame", img_gray)
+    cv2.waitKey(0)
     result = cv2.matchTemplate(img_gray, template_gray, cv2.TM_CCOEFF_NORMED)
     # result = cv2.matchTemplate(img_gray, template_gray, cv2.TM_SQDIFF_NORMED)
 
@@ -78,14 +92,16 @@ def processFrame(frame):
     cv2.waitKey(0)
         
     
-# cap = cv2.VideoCapture('cod_data_loader/res/FastWeapon.mp4')
-cap = cv2.VideoCapture('cod_data_loader/res/inventory1.jpg')
+
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
   print("Error opening video stream or file")
 while cap.isOpened():
     success, image = cap.read()
-    processFrame(image)
+    if (success):
+        processFrame(image)
+    else:
+        break
 # Create a trackbar to control the threshold
 # cv2.createTrackbar('Threshold', 'Matching regions', int(threshold*100), 100, on_trackbar)
 
