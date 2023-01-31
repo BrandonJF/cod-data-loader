@@ -23,10 +23,9 @@ def findDeps(requirement_name, level = None, depth = 0, breadcrumb = ""):
     # If there are child node iterate through them depth first
     else:
         for requirement in found_requirements:
-            # print(f'Navigating {requirement} subtree for {requirement_name}')
-            name = requirement.name
-            level = requirement.level
-            findDeps(name, level= level, depth = depth + 1, breadcrumb = breadcrumb +f' -> {name}({level})')
+            req_name = requirement.name
+            req_level = requirement.level
+            findDeps(req_name, level= req_level, depth = depth + 1, breadcrumb = breadcrumb +f' -> {req_name}({req_level})')
 
 if not TEST_MODE:    
     with open('all_weapons_data.pickle', 'rb') as f:
@@ -38,10 +37,8 @@ inp = input('Attachment Name: ')
 for item_name, req_list in data.items():
     try:
         if not inp or inp in item_name:
-            # depth, breadcrumb = findDeps(item_name)
             findDeps(item_name, depth= 0)
             print(f'_________________')
-            # print(f'depth = {depth} //{item_name}{breadcrumb}' ,end="\n" * 2)
     except Exception as e:    
         print(f'ERROR WITH REQS FOR: {item_name}:{req_list} - {e}' )
        
