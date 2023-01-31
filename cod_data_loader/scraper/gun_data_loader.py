@@ -11,7 +11,7 @@ data = None
 
 def findDeps(requirement_name, level = None, depth = 0, breadcrumb = ""):
     found_requirements = data.get(requirement_name)
-    print(" " * depth, ">" * depth, requirement_name, f'{"(" + str(level) +")" if level else ""}')
+    print(" " * (depth), ">" * depth, requirement_name, f'{"(" + str(level) +")" if level else ""}')
     # Create the  first node in the breadcrumb if there is none
     if not breadcrumb:
         breadcrumb = requirement_name
