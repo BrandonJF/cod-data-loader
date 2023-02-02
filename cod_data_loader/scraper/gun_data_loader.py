@@ -2,10 +2,18 @@ import pickle
 from requirementtuple import Requirement
 from bs4 import BeautifulSoup
 from test_data import TestData
+import pandas as pd
+from IPython.display import display
+
+
+
 
 # Config
-TEST_MODE = False
+TEST_MODE = True
 data = None
+
+
+
 
 
 def findDeps(requirement_name, level=None, depth=0, breadcrumb=""):
@@ -37,7 +45,7 @@ def findDeps(requirement_name, level=None, depth=0, breadcrumb=""):
             )
 
 # Load test data if debugging:
-if TEST_MODE:
+if not TEST_MODE:
    data = TestData
 # Otherwise load data from the pickled scraped web data:
 else:
@@ -45,11 +53,15 @@ else:
         data = pickle.load(f)
 
 # Allow for search by substring if we only want a subset of the data renderd:
-inp = input("Attachment Name: ")
-for item_name, req_list in data.items():
-    try:
-        if not inp or inp in item_name:
-            findDeps(item_name, depth=0)
-            print(f"_________________")
-    except Exception as e:
-        print(f"ERROR WITH REQS FOR: {item_name}:{req_list} - {e}")
+if not TEST_MODE:
+    inp = input("Attachment Name: ")
+    for item_name, req_list in data.items():
+        try:
+            if not inp or inp in item_name:
+                findDeps(item_name, depth=0)
+                print(f"_________________")
+        except Exception as e:
+            print(f"ERROR WITH REQS FOR: {item_name}:{req_list} - {e}")
+
+df = pd.DataFrame.from_dict(data=data)
+display(df)
