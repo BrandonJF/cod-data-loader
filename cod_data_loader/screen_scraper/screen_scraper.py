@@ -5,7 +5,7 @@ import re
 
 
 # cap = cv2.VideoCapture('cod_data_loader/res/haystack_video_frame.png')
-cap = cv2.VideoCapture('cod_data_loader/res/SlowBrowse.mp4')
+cap = cv2.VideoCapture('../res/SlowBrowse.mp4')
 threshold = 0.6
 curr_frame = 0 
 curr_second = 0
